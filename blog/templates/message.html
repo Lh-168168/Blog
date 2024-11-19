@@ -1,0 +1,74 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block title %}留言  {% endblock %}
+{% block banner %}
+    <div class="bg-cover pd-header about-cover">
+        <div class="container">
+            {% include 'layout/banner.html' %}
+        </div>
+    </div>
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'plugin/valine/valine.css' %}" type="text/css">
+{% endblock css %}
+{% block contents %}
+    <main class="content" style="min-height: 301px;">
+        <div id="contact" class="container chip-container">
+            <div class="card">
+                <div class="card-content">
+                    <div class="tag-title center-align">
+                        <i class="fas fa-comments"></i>&nbsp;&nbsp;留言板
+                    </div>
+                    <hr>
+                    <div id="add_color" style="text-align: center">在这里可以留下你的足迹，欢迎在下方留言，欢迎交换友链，一起交流学习！
+                        <hr>
+                    </div>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th align="left">友情链接申请格式</th>
+                            <th align="center">小祖友链信息</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr id="add_color">
+                            <td align="left">博客名称: ( 网站名称 )</td>
+                            <td align="center">祖国万岁</td>
+                        </tr>
+                        <tr>
+                            <td align="left">博客网址: ( 需带https )</td>
+                            <td align="center"><a href="https://jwt1399.top/"></a></td>
+                        </tr>
+                        <tr id="add_color">
+                            <td align="left">博客头像: ( 需一张图片 )</td>
+                            <td align="center"><a href="https://jwt1399.top/favicon.png">https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd6jx39C3usYFNuxaa0S-gJO2ZLq5K5pYJeQ&s</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">博客介绍: ( 简介限定20个字以内 )</td>
+                            <td align="center">点滴随笔，记录所见所闻和所得</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="card">
+                <div class="card valine-card" data-aos="fade-up">
+                    <div class="comment_headling"
+                         style="font-size: 20px; font-weight: 700; position: relative; left: 20px; top: 15px; padding-bottom: 5px;">
+                        <i id="add_color" class="fas fa-comments fa-fw" aria-hidden="true"></i>
+                        <span id="add_color">评论-----昵称和邮箱必填，网址选填</span>
+                    </div>
+                    <div id="vcomments" class="card-content" style="display: grid"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'plugin/valine/av-min.js' %}"></script>
+    <script src="{% static 'plugin/valine/Valine.min.js' %}"></script>
+    <script src="{% static 'js/valine_key.js' %}"></script>
+{% endblock js %}

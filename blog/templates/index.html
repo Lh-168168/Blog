@@ -1,0 +1,320 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block title %}首页 {% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/bubble.css' %}">
+    <style>
+        .block-with-add {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
+        }
+
+        .text {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
+        }
+        .btn, .btn-large, .btn-small {
+            text-decoration: none;
+            color: #fff;
+            background-color: #ee6e73;
+            text-align: center;
+            letter-spacing: .5px;
+            -webkit-transition: background-color .2s ease-out;
+            transition: background-color .2s ease-out;
+            cursor: pointer;
+    }
+    </style>
+    <link rel="stylesheet" href="{% static 'css/index_add.css' %}">
+    
+{% endblock %}
+{% block banner %}
+    <div class="carousel carousel-slider center index-cover" data-indicators="true" style="margin-top: -64px;">
+        <div class="bubble" style="--i:1"></div>
+        <div class="bubble" style="--i:2"></div>
+        <div class="bubble" style="--i:3"></div>
+        <div class="bubble" style="--i:4"></div>
+        <div class="bubble" style="--i:5"></div>
+        <div class="bubble" style="--i:6"></div>
+        <div class="bubble" style="--i:7"></div>
+        <div class="bubble" style="--i:8"></div>
+        <div class="bubble" style="--i:9"></div>
+        <div class="bubble" style="--i:10"></div>
+        <div class="bubble" style="--i:11"></div>
+        <div class="bubble" style="--i:12"></div>
+        <div class="bubble" style="--i:13"></div>
+        <div class="bubble" style="--i:14"></div>
+        <div class="bubble" style="--i:15"></div>
+        <div class="bubble" style="--i:16"></div>
+        <div class="bubble" style="--i:17"></div>
+        <div class="bubble" style="--i:18"></div>
+        <div class="bubble" style="--i:19"></div>
+        <div class="bubble" style="--i:20"></div>
+        <div class="carousel-item red white-text bg-cover about-cover">
+            <div class="container">
+                {% include 'layout/banner.html' %}
+                <div class="cover-btns">
+                    <a href="#indexCard" class="waves-effect waves-light btn">
+                        <i class="fa fa-angle-double-down"></i>开始阅读
+                    </a>
+                </div>
+                <div class="cover-social-link">
+                    {% for a in social %}
+                        <a href="{{ a.social_url }}">
+                            <i class="{{ a.social_icon }}"></i>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block contents %}
+    <main class="content">
+        <div id="indexCard" class="index-card">
+            <div class="container ">
+                <div class="card">
+                    <div class="card-content" id="dark_content">
+                        {#                    <link rel="stylesheet" href="{% static 'css/APlayer.min.css' %}">#}
+                        {#                    <div class="music-player">#}
+                        {#                        <div class="row">#}
+                        {#                            <div class="col l8 offset-l2 m10 offset-m1 s12">#}
+                        {#                                <div id="aplayer" class="music"></div>#}
+                        {#                            </div>#}
+                        {#                        </div>#}
+                        {#                    </div>#}
+                        {#                    <script src="{% static 'js/APlayer.min.js' %}"></script>#}
+                        {#                    <script>#}
+                        {#                        $(function () {#}
+                        {#                            new APlayer({#}
+                        {#                                container: document.getElementById('aplayer'),#}
+                        {#                                fixed: 'false' === 'true',#}
+                        {#                                autoplay: 'true' === 'true',#}
+                        {#                                theme: '#42b983',#}
+                        {#                                loop: 'all',#}
+                        {#                                order: 'list',#}
+                        {#                                preload: 'auto',#}
+                        {#                                volume: Number('0.2'),#}
+                        {#                                listFolded: 'false' === 'true',#}
+                        {#                                listMaxHeight: '',#}
+                        {#                                audio: eval([{#}
+                        {#                                    "name": "我只在乎你",#}
+                        {#                                    "artist": "邓丽君",#}
+                        {#                                    "url": "https://music.163.com/song/media/outer/url?id=229010.mp3",#}
+                        {#                                    "cover": "https://i.loli.net/2020/03/17/3mFfpKMikuPzAjx.jpg"#}
+                        {#                                }])#}
+                        {#                            });#}
+                        {#                        });#}
+                        {#                    </script>#}
+                        {% for notice in notices %}
+                            <div class="dream">
+                                <div class="title center-align">
+                                    <i class="{{ notice.icon }}"></i>&nbsp;&nbsp;{{ notice.title }}
+                                </div>
+                                <div class="row">
+                                    <div class="col l8 offset-l2 m10 offset-m1 s10 offset-s1 center-align text">
+                                        {{ notice.content }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <!--推荐文章-->
+                        <div id="recommend-sections" class="recommend">
+                            <div class="title"><i class="far fa-thumbs-up"></i>&nbsp;&nbsp;推荐文章</div>
+                            <div class="row">
+                                {% for top_article in top_articles %}
+                                    <div class="col s12 m6">
+                                        <div class="post-card"
+                                             style="background-image: url('{{ top_article.cover }}')">
+                                            <div class="post-body">
+                                                <div class="post-categories">
+                                                    <a href="{% url 'article_category' top_article.category_id %}"
+                                                       class="category">{{ top_article.category }}</a>
+                                                </div>
+                                                <a href="{% url 'article_detail' top_article.id %}">
+                                                    <h3 class="post-title">{{ top_article.title }}</h3>
+                                                </a>
+                                                <p class="post-description">
+                                                    {{ top_article.desc }}
+                                                </p>
+                                                <a href="{% url 'article_detail' top_article.id %}"
+                                                   class="read-more btn waves-effect waves-light"
+                                                   style="background: linear-gradient(to right, #FF5E3A 0%, #FF2A68 100%)"
+                                                   target="_blank">
+                                                    <i class="icon far fa-eye fa-fw"></i>阅读更多
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--所有文章-->
+
+        </div>
+
+
+        <div class="container">
+            <div class="layout" id="content-inner">
+                <div class="recent-posts" id="recent-posts">
+                    {% for article in all_articles %}
+                        <div class="recent-post-item">
+                            <div class="post_cover "><a href="{% url 'article_detail' article.id %}"
+                                                        title="{{ article.title }}"><img
+                                    class="post_bg"
+                                    src="{{ article.cover }}"
+                                    alt="{{ article.title }}"></a>
+                            </div>
+                            <div class="recent-post-info"><a class="article-title"
+                                                             href="{% url 'article_detail' article.id %}"
+                                                             title="{{ article.title }}">{{ article.title }}</a>
+                                <div class="article-meta-wrap"><span class="post-meta-date"><i
+                                        class="far fa-calendar-alt"></i><span
+                                        class="article-meta-label">发表于</span><time>{{ article.add_time | date:"Y-m-d" }}</time></span><span
+                                        class="article-meta"><span class="article-meta-separator">|
+                                    {% if article.category.name %}
+                                        </span><i
+                                            class="fas fa-inbox"></i><a
+                                            class="article-meta__categories"
+                                            href="{% url 'article_category' article.category_id %}">{{ article.category.name }}</a>
+                                        </span>
+                                    {% else %}
+                                        </span><i
+                                            class="fas fa-inbox"></i><a
+                                            class="article-meta__categories" href="#">None</a></span>
+                                    {% endif %}
+                                    <span
+                                            class="article-meta tags"><span class="article-meta-separator">|</span><i
+                                            class="fas fa-tag"></i>
+                                       {% if article.tag.all %}
+                                            {% for tag in article.tag.all %}
+                                                <a class="article-meta__tags" href="{% url 'article_tag' tag.id %}">{{ tag.name }}</a>
+                                                {% if not forloop.last %}
+                                                    <span class="article-meta-link">•</span>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% else %}
+                                            <a class="article-meta__tags" href="#">None</a>
+                                           </span>
+                                        {% endif %}
+                                </div>
+
+                                <div class="text">
+                                    {{ article.content_as_html|safe|striptags }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {#        <nav id="pagination">#}
+                    {#            <div class="pagination"><span class="page-number current">1</span><a class="page-number"#}
+                    {#                                                                                 href="/page/2/#content-inner">2</a><span#}
+                    {#                    class="space">…</span><a class="page-number" href="/page/11/#content-inner">11</a><a#}
+                    {#                    class="extend next" rel="next" href="/page/2/#content-inner"><i#}
+                    {#                    class="fas fa-chevron-right fa-fw"></i></a></div>#}
+                    {#        </nav>#}
+                </div>
+            </div>
+        </div>
+        {#   老版所有文章展示#}
+        {#    <article id="articles" class="container articles">#}
+        {#        <div class="row article-row">#}
+        {#            {% for article in all_articles.object_list %}#}
+        {#                <div class="article col s12 m6 l4" data-aos="zoom-in">#}
+        {#                    <div class="card">#}
+        {#                        <a href="{% url 'article_detail' article.id %}">#}
+        {#                            <div class="card-image">#}
+        {#                                <img src="{{ article.cover }}" alt="{{ article.title }}">#}
+        {#                                <span class="card-title">{{ article.title }}</span>#}
+        {#                            </div>#}
+        {#                        </a>#}
+        {#                        <div class="card-content article-content">#}
+        {#                            <div class="summary block-with-text block-with-add">#}
+        {#                                {{ article.desc }}#}
+        {#                            </div>#}
+        {#                            <div class="publish-info">#}
+        {#                            <span class="publish-date">#}
+        {#                                <i class="far fa-clock fa-fw icon-date"></i>{{ article.add_time | date:"Y-m-d" }}#}
+        {#                            </span>#}
+        {#                                <span class="publish-author">#}
+        {#                                <i class="fas fa-bookmark fa-fw icon-category"></i>#}
+        {#                                <a href="{% url 'article_category' article.category_id %}" class="post-category">{{ article.category }}</a>#}
+        {#                            </span>#}
+        {#                            </div>#}
+        {#                        </div>#}
+        {#                        <div class="card-action article-tags">#}
+        {#                        {% if article.tag.all  %}#}
+        {#                        	 {% for tag in article.tag.all %}#}
+        {#                                <a href="{% url 'article_tag' tag.id %}">#}
+        {#                                    <span class="chip bg-color">{{ tag.name }}</span>#}
+        {#                                </a>#}
+        {#                            {% endfor %}#}
+        {#                        {% else %}#}
+        {#                            <span class="chip bg-color">None</span>#}
+        {#                        {% endif %}#}
+        {#                        </div>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            {% endfor %}#}
+        {#        </div>#}
+        {#    </article>#}
+    </main>
+{% endblock %}
+
+{% block pagination %}
+    <div style="display: flex; justify-content: center;">
+        <ul class="pagination" style="display: flex; align-items: center; margin: 0; padding: 0; list-style: none;">
+            {{ page_string }}
+        </ul>
+        <form method="get" style="display: flex; align-items: center; margin-left: 10px;">
+            {% csrf_token %}
+            <div class="input-group" style="width: 200px; display: flex;">
+                <input type="text" class="form-control" placeholder="页码" name="page"
+                       style="width: 60px; text-align: center;">
+                <span class="input-group-btn">
+                <button class="btn btn-default" type="submit" style="margin-left: 5px; margin-top: 8px">跳转</button>
+            </span>
+            </div>
+        </form>
+    </div>
+{#    <div class="container paging">#}
+{#        <div class="row">#}
+{#            <div class="col s6 m4 l4">#}
+{#                {% if all_articles.has_previous %}#}
+{#                    <a href="?{{ all_articles.previous_page_number.querystring }}"#}
+{#                       class="left btn-floating btn-large waves-effect waves-light left-color">#}
+{#                {% else %}#}
+{#                    <a class="left btn-floating btn-large disabled">#}
+{#                {% endif %}#}
+{#                <i class="fas fa-angle-left"></i>#}
+{#                </a>#}
+{#            </div>#}
+{##}
+{##}
+{#            <div class="page-info col m4 l4 hide-on-small-only">#}
+{#                <div class="center-align b-text-gray">{{ all_articles.number }} / {{ all_articles.pages | last }}</div>#}
+{#            </div>#}
+{##}
+{#            <div class="col s6 m4 l4">#}
+{#                {% if all_articles.has_next %}#}
+{#                    <a href="?{{ all_articles.next_page_number.querystring }}"#}
+{#                       class="right btn-floating btn-large waves-effect waves-light right-color">#}
+{#                {% else %}#}
+{#                    <a class="right btn-floating btn-large disabled">#}
+{#                {% endif %}#}
+{#                <i class="fas fa-angle-right"></i>#}
+{#                </a>#}
+{#            </div>#}
+{##}
+{#        </div>#}
+{#    </div>#}
+{% endblock %}
+{% block js %}{% endblock %}

@@ -1,0 +1,318 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+    {% load static %}
+    <head>
+        <meta charset="utf-8">
+        <meta name="keywords" content="{{ KEYWORDS }}">
+        <meta name="description" content="{{ DESC }}">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <meta name="renderer" content="webkit|ie-stand|ie-comp">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <title>{% block title %}{% endblock %}| 祖国万岁</title>
+        <link rel="icon" type="image/png" href="{{ LOGO }}">
+        <link rel="stylesheet" type="text/css" href="{% static '/css/theme.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static '/css/all.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static '/css/materialize.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static '/css/aos.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static '/css/animate.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static '/css/lightgallery.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static '/css/matery.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static '/css/my.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static '/css/loading.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+        <script src="{% static 'js/jquery.min.js' %}"></script>
+        <script src="/static/vue/vue.js"></script>
+        <script src="{% static 'bootstrap-4.6.2-dist/js/bootstrap.js' %}"></script>
+        <style>
+            .carousel-control {
+                width: 45px;
+                height: 45px;
+                line-height: 55px;
+                border-radius: 45px;
+                background: transparent;
+                cursor: pointer;
+                z-index: 100;
+            }
+
+            #prev-cover {
+                position: absolute;
+                top: 48%;
+                left: 8px;
+            }
+
+            #next-cover {
+                position: absolute;
+                top: 48%;
+                right: 8px;;
+            }
+
+            #prev-cover i {
+                margin-right: 3px;
+            }
+
+            #next-cover i {
+                margin-left: 3px;
+            }
+            .carousel-control:hover {
+                background-color: rgba(0, 0, 0, .4);
+            }
+
+            .carousel-control i {
+                color: #fff;
+                font-size: 2.4rem;
+            }
+        </style>
+        {% block css %}{% endblock %}
+</head>
+<body>
+
+    <div>
+        {% include 'layout/header.html' %}
+    </div>
+    
+    
+    
+    {% block banner %}{% endblock %}
+    <script>
+        $(function () {
+            let coverSlider = $('.carousel');
+            coverSlider.carousel({
+                duration: Number('120'),
+                fullWidth: true,
+                indicators: 'false' === 'true'
+            });
+            let carouselIntervalId;
+            let restartPlay = function () {
+            };
+        });
+    </script>
+    <div>
+        {% block contents %}{% endblock %}
+        {#翻页#}
+        {% block pagination %}
+        {% endblock %}
+    </div>
+    {#动态人物#}
+    <div style="height: 450px">
+            <canvas id="canvas"></canvas>
+    </div>
+    
+    <!-- 页脚 -->
+    {% include 'layout/footer.html' %}
+    
+    <!-- 滚动进度条 -->
+    <div class="progress-bar"></div>
+    <div id="searchModal" class="modal">
+        <div class="modal-content">
+            <div class="search-header">
+                <span class="title" id="searchSpan">鼠标离开输入框自动请求</span>&nbsp;&nbsp;<i class="fas fa-search" style="font-size: 23px;"></i>
+                <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close" id="close"
+                        style="position: absolute; top: -1px; right: 10px; background: transparent; border: none; font-size: 50px;">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字" class="search-input">
+            </div>
+            <div id="searchResult"></div>
+            <div class="pagination" id="pagination" style="display: none;text-align: center;justify-content: center">
+                <div style="display: flex;text-align: center;justify-content: center">
+                    <div id="prevPage" style="margin-right: 10px"><i class="fa fa-2x fa-angle-left" aria-hidden="true" /></i></div>
+                    <div id="nextPage" style="margin-left: 10px"><i class="fa fa-2x fa-angle-right" aria-hidden="true" /></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="{% static '/js/days.js' %}"></script>    
+<script type="text/javascript">
+      $(function () {
+            closeEvent();
+            getCookie();
+            debounce();
+            loadSearch();
+        })
+     function resetSearch(){
+       $('#searchModal').click(function (){
+            document.getElementById("searchInput").value="";
+            document.getElementById("searchResult").innerHTML="";
+            document.getElementById("pagination").style.display="none";
+            document.getElementById("searchSpan").innerHTML = "鼠标离开输入框自动请求";  // 恢复默认文本
+           
+       })
+    }
+
+    function closeEvent(){
+         $('#close').click(function (){
+             document.getElementById("searchModal").style.display = 'none';
+             resetSearch();
+         })
+    }
+
+    /**
+     * @desc: 获取cookie字段
+     * @author: CoderCharm
+     * @time: 2020/4/27
+     * @param c_name 待获取的cookie字段名称
+     * */
+    function getCookie(c_name) {
+        if (document.cookie.length > 0) {
+            let c_start = document.cookie.indexOf(c_name + "=");
+            if (c_start !== -1) {
+                c_start = c_start + c_name.length + 1;
+                let c_end = document.cookie.indexOf(";", c_start);
+                if (c_end === -1) c_end = document.cookie.length;
+                return unescape(document.cookie.substring(c_start, c_end));
+            }
+        }
+        return "";
+    }
+     /**
+     *
+     * 防抖工具函数
+     *
+     * */
+    function debounce(fun, delay) {
+        return function (args) {
+            let that = this;
+            let _args = args;
+            clearTimeout(fun.id);
+            fun.id = setTimeout(function () {
+                fun.call(that, _args)
+            }, delay)
+        }
+    }
+    // 初始化分页按钮为隐藏状态
+    document.getElementById("pagination").style.display = 'none';
+    /**
+     * @desc: 查询
+     * @author: CoderCharm
+     * @time: 2020/4/27
+     * @param data 查询的信息
+     * */
+    function loadSearch(data) {
+        fetch('/search/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "X-CSRFToken": getCookie("csrftoken")
+            },
+            body: JSON.stringify(data)
+        }).then(response => response.json()).then(res => {
+            if(res.code === 200){
+                const paginationDiv = document.getElementById('pagination');
+                currentPage = res.data.pageInfo.currentPage;
+                let searchSpan = document.getElementById("searchSpan");
+                let resLen = res.data.total_count;
+                if( resLen <= 0) {
+                    paginationDiv.style.display = 'none';
+                    searchSpan.innerHTML = `<span style='color:#F56C6C'>没有搜到关于&nbsp;&nbsp;${data.searchKey}&nbsp;&nbsp;的内容</span>`
+                    return
+                }else{
+                    paginationDiv.style.display = 'flex';
+                    searchSpan.innerHTML = `<span style='color:#67C23A'>搜到&nbsp;&nbsp;${data.searchKey}&nbsp;&nbsp;约&nbsp;&nbsp;${resLen}&nbsp;&nbsp;条内容</span>`
+                }
+                let strTemp = `<ul class="search-result-list">`;
+                for(let i of res.data.articleList){
+                    let formattedDate = dayjs(i.add_time).format('YYYY-MM-DD');
+                    let author = i.author;
+                    let click_count = i.click_count;
+                    let category = i.category__name;
+                    console.log(i.category__name)
+                      strTemp += `
+                        <li class="search-item"> 
+                            <div class="search-item-content">
+                                <h3 class="search-title" style="margin-left: 0;margin-bottom: 5px">
+                                    <a href="/article/${i.id}" target="_blank">${i.title}</a>
+                                </h3>
+                                <p class="search-description"><span style="font-size: 15px;align-items: center;justify-content: center">摘要:${i.desc}</span></p> <!-- 假设有文章描述字段 -->
+                                <span style="margin-right: 5px"><i class="fa fa-calendar" aria-hidden="true"></i><span class="search-date" style="margin-left: 4px">${formattedDate}</span></span>
+                                <span style="margin-right: 5px"><i class="fa fa-user" aria-hidden="true"></i><span class="search-date" style="margin-left: 4px;margin-right: 4px">${author}</span></span>
+                                <span style="margin-right: 5px"><i class="fa fa-eye" aria-hidden="true"></i></i><span class="search-date" style="margin-left: 4px;margin-right: 4px">${click_count}</span></span>
+                                <span style="margin-right: 5px"><i class="fas fa-bookmark"></i><span class="search-date" style="margin-left: 4px">${category}</span></span>
+                            </div> 
+                        </li>`;
+                }
+            strTemp += "</ul>";
+            $resultContent.innerHTML = strTemp;
+            }
+
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+
+    }
+
+    // 搜索框函数
+    let searchInput = document.getElementById("searchInput");
+    let $resultContent = document.getElementById("searchResult");
+    let currentPage = 1;
+    // 设置输入自动搜索 500毫秒防抖
+     searchInput.addEventListener("input", debounce(() => {
+         let searchKey = searchInput.value;
+         if(searchKey.length >= 1){
+             loadSearch({searchKey})
+         }else{
+             console.log("搜索key为空")
+         }
+
+     }, 500), false);
+     
+    // 分页按钮事件监听
+    document.getElementById("prevPage").addEventListener("click", () => {
+    if (currentPage > 1) {
+        currentPage--;
+        let searchKey = searchInput.value;
+        loadSearch({searchKey, page: currentPage, pageSize: 10});
+    }
+    });
+
+    document.getElementById("nextPage").addEventListener("click", () => {
+        currentPage++;
+        let searchKey = searchInput.value;
+        loadSearch({searchKey, page: currentPage, pageSize: 10});
+    });
+
+
+
+</script>
+{#    <script src="{% static 'js/search.js' %}"></script>#}
+{#    <script type="text/javascript">#}
+{#        $(function () {#}
+{#            searchFunc("/" + "search.json", 'searchInput', 'searchResult');#}
+{#        });#}
+{#    </script>#}
+    
+    <!-- 回到顶部按钮 -->
+    <div id="backTop" class="top-scroll">
+        <a class="#" href="#">
+            <img src="{% static '/img/123.png' %}" style="width: 120px;height: 160px">
+        </a>
+    </div>
+    <script src="{% static 'js/materialize.min.js' %}"></script>
+    <script src="{% static 'js/masonry.pkgd.min.js' %}"></script>
+    <script src="{% static 'js/aos.js' %}"></script>
+    <script src="{% static 'js/scrollProgress.min.js' %}"></script>
+    <script src="{% static 'js/lightgallery-all.min.js' %}"></script>
+    <script src="{% static 'js/matery.js' %}"></script>
+    <script src="{% static 'js/clicklove.js' %}" async="async"></script>
+    <script src="{% static 'js/busuanzi.js' %}"></script>
+    <script src="{% static 'js/instantpage.js' %}" type="module"></script>
+    <script src="{% static 'js/prism.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/gsap.min.js"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'vue/vue.js' %}"></script>
+    {#<script src="{% static 'js/loading.js' %}"></script>#}
+    <!--背景特效-->
+    {#<script type="text/javascript" color="0,0,255" pointColor="0,0,255" opacity='0.7' zIndex="-1" count="99" src="{% static 'js/canvas-nest.js' %}"></script>#}
+{#    <script type="text/javascript" size="150" alpha='0.6' zIndex="-1" src="{% static 'js/ribbon.min.js' %}"#}
+{#            async="async"></script>#}
+{#    <script type="text/javascript" src="{% static 'js/ribbon-dynamic.js' %}" async="async"></script>#}
+    </body>
+{% block js %}{% endblock %}
+
+</html>
+
+

@@ -1,0 +1,16 @@
+body{
+    background-color: white;
+}
+
+.prev i{
+    font-size: 80px;
+    color: black;
+    cursor: pointer;
+    text-shadow: 0 0 10px #ffffff;
+}
+.next i {
+    font-size: 90px;
+    color: black;
+    cursor: pointer;
+    text-shadow: 0 0 10px #ffffff;
+}

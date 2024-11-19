@@ -1,0 +1,101 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block title %}文章归档  {% endblock %}
+{% block banner %}
+    <div class="bg-cover pd-header about-cover">
+        <div class="container">
+            {% include 'layout/banner.html' %}
+        </div>
+    </div>
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/archives.css' %}">
+{% endblock %}
+{% block contents %}
+    <div id="indexCard" class="index-card">
+        <div class="container ">
+            <div class="card">
+                <div class="card-content">
+                    <div style="text-align: center;font-size: 50px"><span id="year_add">{{ year }}</span></div>
+                    <div id="archives">
+                        <div id="archives-content">
+                            {% if articles %}
+                            	{% for month,article_list in articles.items %}
+                                <div class="archive-title">
+                                    <div class="archives" data-date="2024">
+                                        <h3>{{ year }} 年 {{ month }} 月</h3>
+                                        {% for obj in article_list %}
+                                            <div class="brick ">
+                                                <a href="{% url 'article_detail' obj.id %}">
+                                                    <span class="time">{{ obj.add_time | date:"m-d" }}</span>{{ obj.title }}
+                                                </a>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                   <div class="archive-title">
+                                    <div class="archives">
+                                        <div class="brick"style="color: white">
+                                           未完待续...
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %} 
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block pagination %}
+    <div style="display: flex; justify-content: center;">
+        <ul class="pagination" style="display: flex; align-items: center; margin: 0; padding: 0; list-style: none;">
+            {{ page_string }}
+        </ul>
+        <form method="get" style="display: flex; align-items: center; margin-left: 10px;">
+            {% csrf_token %}
+            <div class="input-group" style="width: 200px; display: flex;">
+                <input type="text" class="form-control" placeholder="页码" name="page"
+                       style="width: 60px; text-align: center;">
+                <span class="input-group-btn">
+                <button class="btn btn-default" type="submit" style="margin-left: 5px; margin-top: 8px;background-color: #ee6e73;">跳转</button>
+            </span>
+            </div>
+        </form>
+    </div>
+{#    <div class="container paging">#}
+{#        <div class="row">#}
+{#            <div class="col s6 m4 l4">#}
+{#                {% if all_articles.has_previous %}#}
+{#                    <a href="?{{ all_articles.previous_page_number.querystring }}"#}
+{#                       class="left btn-floating btn-large waves-effect waves-light left-color">#}
+{#                {% else %}#}
+{#                    <a class="left btn-floating btn-large disabled">#}
+{#                {% endif %}#}
+{#                <i class="fas fa-angle-left"></i>#}
+{#                </a>#}
+{#            </div>#}
+{##}
+{##}
+{#            <div class="page-info col m4 l4 hide-on-small-only">#}
+{#                <div class="center-align b-text-gray">{{ all_articles.number }} / {{ all_articles.pages | last }}</div>#}
+{#            </div>#}
+{##}
+{#            <div class="col s6 m4 l4">#}
+{#                {% if all_articles.has_next %}#}
+{#                    <a href="?{{ all_articles.next_page_number.querystring }}"#}
+{#                       class="right btn-floating btn-large waves-effect waves-light right-color">#}
+{#                {% else %}#}
+{#                    <a class="right btn-floating btn-large disabled">#}
+{#                {% endif %}#}
+{#                <i class="fas fa-angle-right"></i>#}
+{#                </a>#}
+{#            </div>#}
+{##}
+{#        </div>#}
+{#    </div>#}
+{% endblock %}

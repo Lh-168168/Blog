@@ -1,0 +1,93 @@
+{% extends 'layout/base.html' %}
+{% load custom_tag %}
+{% load static %}
+{% block title %}成员{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/friend.css' %}">
+{% endblock %}
+{% block banner %}
+    <div class="bg-cover pd-header about-cover">
+        <div class="container">
+            {% include 'layout/banner.html' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block contents %}
+    <main class="content">
+        <div class="container friends-container">
+            <div class="card">
+                <div class="card-content">
+                    <div class="tag-title center-align" id="add_color">
+                        <i class="fas fa-address-book"></i>&nbsp;&nbsp;友链
+                    </div>
+                    <article id="friends-link" style="position: relative; height: 1222px;">
+                        <div class="row tags-posts friend-all">
+                            {% for link in links %}
+                                <div class="col s12 m6 l4 friend-div aos-init aos-animate" data-aos="zoom-in-up"
+                                     style="position: absolute; left: 0px; top: 0px; ">
+                                    <div id="add_color_back" class="card friend_add frind-card1" data-aos="zoom-in-up"  style="box-shadow: none !important;">
+                                        <div class="frind-ship">
+                                            <div class="title">
+                                                <img src="{{ link.avatar }}" alt="img">
+                                                <div>
+                                                    <h1 class="friend-name">{{ link.title }}</h1>
+                                                    <p style="position: relative; top: -35px; font-size: 1rem; line-height: 1.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 150px;">
+                                                        <span style="font-size: 13px">{{ link.desc }}</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="friend-button">
+                                                <a href="{{ link.url }}" target="_blank"
+                                                   class="button button-glow button-rounded button-caution">
+                                                    前去关照
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <a href="{{ link.url }}">
+                                            <div class="text-box">
+                                                <div>
+                                                    <h2 style="font-size: 20px;text-align: center;">{{ link.title }}</h2>
+                                                    <p style="font-size: 13px;text-align: center">{{ link.desc }}</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </article>
+                </div>
+            </div>
+          <div class="card">
+                <div class="card valine-card" data-aos="fade-up">
+                    <div class="comment_headling"
+                         style="font-size: 20px; font-weight: 700; position: relative; left: 20px; top: 15px; padding-bottom: 5px;">
+                        <i id="add_color" class="fas fa-comments fa-fw" aria-hidden="true"></i>
+                        <span id="add_color">评论-----昵称和邮箱必填，网址选填</span>
+                    </div>
+                    <div id="vcomments" class="card-content" style="display: grid"></div>
+                </div>
+            </div>
+        </div>
+    
+      
+    </main>
+    <script>
+        $(function () {
+            $('#friends-link').masonry({
+                itemSelector: '.friend-div'
+            });
+        });
+    </script>
+{% endblock %}
+{% block js %}
+    <script src="{% static 'plugin/valine/av-min.js' %}"></script>
+    <script src="{% static 'plugin/valine/Valine.min.js' %}"></script>
+    <script src="{% static 'js/valine_key.js' %}"></script>
+{% endblock js %}
+
+
+
