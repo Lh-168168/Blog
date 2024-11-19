@@ -1,0 +1,148 @@
+{% load static %}
+<!--导航栏-->
+<div id="app1">
+    <link rel="stylesheet" :href="'/static/css/theme/' +theme+'.css'">
+    <header class="navbar-fixed">
+        <nav id="headNav" class="bg-color nav-transparent">
+            <div id="navContainer" class="nav-wrapper head-container">
+                <div class="brand-logo">
+                    {#                    <a href="/" class="waves-effect waves-light">#}
+                    {#                        <img src="{{ LOGO }}" class="logo-img" alt="LOGO">#}
+                    {#                        <span class="logo-span"> {{ SITE_NAME }}</span>#}
+                    {#                    </a>#}
+                    <span>
+                        <img class="logo-img" v-if="theme === 'light'" src="{% static '/img/light.svg' %}"
+                             @click="setTheme('dark')" alt="切换为暗色主题"
+                             style="height: 42px;width: 37px;margin-top: 4px;z-index: 1">
+                        <img class="logo-img" v-if="theme === 'dark'" src="{% static '/img/dark.svg' %}"
+                             @click="setTheme('light')" alt="切换为亮色主题"
+                             style="height: 42px;width: 37px;margin-top: 4px;z-index: 1">
+                        <span class="logo-span"> {{ SITE_NAME }}</span>
+                    </span>
+                </div>
+
+                <!--pc导航栏-->
+                <a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+                <ul class="right nav-menu">
+
+                    <li class="hide-on-med-and-down nav-item">
+                        <a href="/" class="waves-effect waves-light">
+                            <i class="fas fa-home" style="zoom: 0.6;"></i>
+                            <span>首页</span>
+                        </a>
+                    </li>
+
+
+                    <li class="hide-on-med-and-down nav-item">
+                        {% for category in category_nav %}
+                            <a href="{% url 'article_category' category.id %}" class="waves-effect waves-light">
+                                <i class="{{ category.icon }}" style="zoom: 0.6;"></i>
+                                <span>{{ category.name }}</span>
+                            </a>
+                        {% endfor %}
+                    </li>
+
+
+                    <li class="hide-on-med-and-down nav-item">
+                        <a href="" class="waves-effect waves-light">
+                            <i class="fas fa-list" style="zoom: 0.6;"></i>
+                            <span>整理</span>
+                            <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+                        </a>
+                        <ul class="sub-nav menus_item_child ">
+                            <li>
+                                <a href="{% url 'category' %}">
+                                    <i class="fas fa-bookmark" style="margin-top: -20px; zoom: 0.6;"></i>
+                                    <span>归类</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'article_year' %}">
+                                    <i class="fas fa-file-contract" style="margin-top: -20px; zoom: 0.6;"></i>
+                                    <span>归档</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'tag' %}">
+                                    <i class="fas fa-tags" style="margin-top: -20px; zoom: 0.6;"></i>
+                                    <span>标签</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="hide-on-med-and-down nav-item">
+                        <a href="#" class="waves-effect waves-light">
+                           <i class="fa fa-paper-plane" aria-hidden="true" style="zoom: 0.6;"></i>
+                            <span>交流</span>
+                            <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+                        </a>
+                        <ul class="sub-nav menus_item_child " style="display: none;">
+                            <li>
+                                <a href="{% url 'member' %}">
+                                    <i class="fas fa-venus-mars" style="margin-top: -20px; zoom: 0.6;"></i>
+                                    <span>友链</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'message' %}">
+                                    <i class="fas fa-envelope" style="margin-top: -20px; zoom: 0.6;"></i>
+                                    <span>留言</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="hide-on-med-and-down nav-item">
+                        <a href="{% url 'about' %}" class="waves-effect waves-light">
+                            <i class="fas fa-id-card-alt" style="zoom: 0.6;"></i>
+                            <span>关于</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+                            <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+</div>
+
+{% block js %}
+    <script>
+        new Vue({
+            el: '#app1',
+            delimiters: ["[[", "]]"],
+            data: {
+                theme: 'light',//设置默认主题
+            },
+            created() {
+                this.init_theme()
+            },
+            methods: {
+                //设置主题
+                setTheme(themeName) {
+                    this.theme = themeName;
+                    localStorage.setItem('theme', themeName)
+                    this.applyThemeToAllPages(themeName); // 通知其他页面应用主题
+                },
+                //初始化主题
+                init_theme() {
+                    //读取存储的信息  保持持久性
+                    let theme = localStorage.getItem('theme')
+                    if (theme) {
+                        this.theme = theme
+                    }
+                },
+                // 通知其他页面应用主题
+                applyThemeToAllPages(themeName) {
+                    // 触发事件或执行其他操作来通知其他页面更新主题
+                    // 比如使用 EventBus、Custom Event 或直接刷新页面
+                    window.dispatchEvent(new CustomEvent('themeChanged', {detail: themeName}));
+                }
+            }
+        })
+    </script>
+{% endblock %}

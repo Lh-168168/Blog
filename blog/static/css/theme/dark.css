@@ -1,0 +1,160 @@
+body{
+    background-color: #3b2b34;
+}
+#archives .archives a, #archives .archives h3 {
+    color: #ffffff;
+}
+#archives .archives a:hover {
+    background: #3b2b34;
+}
+#artDetail .post-info .post-date {
+    color: #f7f8fa;
+}
+#add_cover{
+    color: white;
+}
+#year_add{
+    color:#ffffff;
+}
+#archives .time {
+    color: #fafafa;
+    padding-right: .625rem;
+}
+article .card .card-content {
+    padding: 15px 15px 12px 18px;
+    color: white;
+}
+.card{
+    background-color: black;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5),       /* 常规阴影 */
+            0 0 20px rgba(255, 255, 255, 0.3),   /* 白色发光效果 */
+            0 0 40px rgba(255, 255, 255, 0.2),   /* 叠加的柔和发光 */
+            0 0 60px rgba(255, 255, 255, 0.1)!important;   /* 更大的发光半径 */
+}
+.article-content .publish-author .post-category {
+    padding-left: 5px;
+    color: white;
+}
+.block-with-text:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    width: 1em;
+    height: 1em;
+    margin-top: 0.2em;
+    background: black;
+}
+#dark_card{
+    background-color: black;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5),       /* 常规阴影 */
+            0 0 20px rgba(255, 255, 255, 0.3),   /* 白色发光效果 */
+            0 0 40px rgba(255, 255, 255, 0.2),   /* 叠加的柔和发光 */
+            0 0 60px rgba(255, 255, 255, 0.1)!important;   /* 更大的发光半径 */
+}
+
+#dark_category_card,#dark_radar{
+    background-color: black;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5),       /* 常规阴影 */
+            0 0 20px rgba(255, 255, 255, 0.3),   /* 白色发光效果 */
+            0 0 40px rgba(255, 255, 255, 0.2),   /* 叠加的柔和发光 */
+            0 0 60px rgba(255, 255, 255, 0.1)!important;   /* 更大的发光半径 */
+}
+.chip-container .tag-title {
+    color: #ffffff;
+}
+.recommend .title {
+    color: white;
+}
+#recent-posts > .recent-post-item {
+    background-color: black!important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.2), 0 0 60px rgba(255, 255, 255, 0.1) !important;
+}
+
+#recent-posts > .recent-post-item > .recent-post-info > .article-title {
+    color: white;
+}
+#recent-posts > .recent-post-item > .recent-post-info > .article-meta-wrap {
+    color: #fff3f3;
+}
+
+#recent-posts > .recent-post-item > .recent-post-info > .article-meta-wrap a {
+    color: #fff3f3;
+}
+.text{
+    color: white;
+}
+.pagination li a {
+    color: #fff;
+}
+.input-group >input::placeholder{
+    color: white;
+}
+
+#add_color{
+    color: white!important;
+}
+#aboutme .introduction {
+    color: white;
+}
+#category_chip_color{
+    color:#23212f!important;
+}
+#vcomments p {
+    margin: 2px 2px 10px;
+    font-size: 1.05rem;
+    line-height: 1.78rem;
+    color: white;
+}
+.v[data-class=v] .vcards .vcard .vhead .vnick {
+    position: relative;
+    font-size: .875em;
+    font-weight: 500;
+    margin-right: .875em;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    color: white;
+}
+.v[data-class=v] .vcount {
+    padding: 5px;
+    font-weight: 600;
+    font-size: 1.25em;
+    color: white;
+}
+.vsubmit.vbtn {
+    color: #ffffff !important;
+}
+.v[data-class=v] .vicon {
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    fill: #f8f6f6;
+    vertical-align: middle;
+}
+#artDetail .card {
+    background-color: black;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.2), 0 0 60px rgba(255, 255, 255, 0.1) !important;
+}
+
+.v[data-class=v] .vinput, .v[data-class=v] .veditor, .v[data-class=v] p, .v[data-class=v] pre code, .v[data-class=v] .status-bar {
+    color: #ded5d5;
+}
+.v[data-class=v] .vcards .vcard .vh .vmeta .vat {
+    font-size: .8125em;
+    color: #e2dad9;
+    cursor: pointer;
+    float: right;
+}
+.v[data-class=v] .vcards .vcard .vh .vtime {
+    font-size: .75em;
+    margin-right: .875em;
+    color: white;
+}
+#another_color{
+    color: black!important;
+}
+
+#add_color_back{
+    background-image: linear-gradient(135deg, #3b2b34 0%, #000000 100%)
+}
+

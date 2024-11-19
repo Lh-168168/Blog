@@ -1,0 +1,475 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% load custom_tag %}
+{% block title %}关于  {% endblock %}
+{% block banner %}
+    <div class="bg-cover pd-header about-cover">
+        <div class="container">
+            {% include 'layout/banner.html' %}
+        </div>
+    </div>
+{% endblock %}
+{% block css %}
+    <style>
+        .active_type_add {
+            margin-top: -76px;
+            margin-left: 107px;
+        }
+    </style>
+
+{% endblock css %}
+{% block contents %}
+    <main class="content">
+        <div id="aboutme" class="container about-container">
+            <div class="card">
+                <div class="card-content">
+                    <div class="row">
+                        <div class="post-statis col l4 hide-on-med-and-down" data-aos="zoom-in-right">
+
+                            <div class="statis">
+                                <span class="count"><a href="{% url 'index' %}">{{ articles | length }}</a></span>
+                                <span class="name" id="add_color">文章</span>
+                            </div>
+
+
+                            <div class="statis">
+                                <span class="count"><a
+                                        href="{% url 'category_tag' %}">{{ categories | length }}</a></span>
+                                <span class="name" id="add_color">分类</span>
+                            </div>
+
+
+                            <div class="statis">
+                                <span class="count"><a href="{% url 'category_tag' %}">{{ tags | length }}</a></span>
+                                <span class="name" id="add_color">标签</span>
+                            </div>
+
+
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <div class="profile center-align">
+                                <div class="avatar">
+                                    <img src="{{ about.avatar }}" alt="{{ SITE_NAME }}"
+                                         class="circle responsive-img avatar-img">
+                                </div>
+                                <div class="author">
+                                    {#                                    <div class="post-statis hide-on-large-only" data-aos="zoom-in-right">#}
+                                    {#                                        <div class="statis">#}
+                                    {#                                            <span class="count"><a href="{% url 'index' %}">>{{ articles | length }}</a></span>#}
+                                    {#                                            <span class="name">文章</span>#}
+                                    {#                                        </div>#}
+                                    {#                                        <div class="statis">#}
+                                    {#                                            <span class="count"><a#}
+                                    {#                                                    href="{% url 'category_tag' %}">{{ categories | length }}</a></span>#}
+                                    {#                                            <span class="name">分类</span>#}
+                                    {#                                        </div>#}
+                                    {#                                        <div class="statis">#}
+                                    {#                                            <span class="count"><a#}
+                                    {#                                                    href="{% url 'category_tag' %}">{{ tags |length }}</a></span>#}
+                                    {#                                            <span class="name">标签</span>#}
+                                    {#                                        </div>#}
+                                    {#                                        #}
+                                    {#                                    </div>#}
+                                    <div class="title" id="add_color">{{ SITE_NAME }}</div>
+                                    <div class="career" id="add_color">{{ about.career }}</div>
+                                    {#                                    <div class="social-link hide-on-large-only" data-aos="zoom-in-left">#}
+                                    {##}
+                                    {#                                        {% for a in social %}#}
+                                    {#                                            <a href="{{ a.social_url }}" class="tooltipped" target="_blank"#}
+                                    {#                                               data-tooltip="{{ a.social_desc }}:{{ a.social_url }}" data-position="top"#}
+                                    {#                                               data-delay="50">#}
+                                    {#                                                <i class="{{ a.social_icon }}"></i>#}
+                                    {#                                            </a>#}
+                                    {#                                        {% endfor %}#}
+                                    {#                                    </div>#}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col l4 hide-on-med-and-down" data-aos="zoom-in-left">
+                            <div class="social-link">
+                                {% for a in social %}
+                                    <a href="{{ a.social_url }}" class="tooltipped" target="_blank"
+                                       data-tooltip="{{ a.social_desc }}" data-position="top"
+                                       data-delay="50">
+                                        <i class="{{ a.social_icon }}"></i>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="introduction center-align" id="add_color" data-aos="fade-up">
+                        {{ about.introduction }}
+                    </div>
+                    <style>
+                        .legend {
+                            display: flex;
+                            align-items: center;
+                            font-size: 14px;
+                            color: #333;
+                        }
+
+                        .legend-item {
+                            display: flex;
+                            align-items: center;
+                            margin-right: 15px;
+                        }
+
+                        .legend-circle {
+                            width: 12px;
+                            height: 12px;
+                            border-radius: 50%;
+                            margin-right: 5px;
+                        }
+
+                        .legend-circle.green {
+                            background-color: #005824;
+                        }
+
+                        .legend-circle.light-green {
+                            background-color: #76c7b7;
+                        }
+
+                        .legend-circle.yellow {
+                            background-color: #f4e925;
+                        }
+
+                        .legend-circle.gray {
+                            background-color: #ccc;
+                        }
+
+                        .background-1 {
+                            background: linear-gradient(to right, #FF0066 0%, #FF00CC 100%);
+                        }
+
+                        .background-2 {
+                            background: linear-gradient(to right, #9900FF 0%, #CC66FF 100%);
+                        }
+
+                        .background-3 {
+                            background: linear-gradient(to right, #2196F3 0%, #42A5F5 100%);
+                        }
+
+                        .background-4 {
+                            background: linear-gradient(to right, #00BCD4 0%, #80DEEA 100%);
+                        }
+
+                        .background-5 {
+                            background: linear-gradient(to right, #4CAF50 0%, #81C784 100%);
+                        }
+
+                        .background-6 {
+                            background: linear-gradient(to right, #FFEB3B 0%, #FFF176 100%);
+                        }
+
+                        .background-7 {
+                            background: linear-gradient(to right, #c471ed 0%, #f64f59 100%);
+                        }
+
+                        .background-8 {
+                            background: linear-gradient(to right, #ef32d9 0%, #89fffd 100%);
+                        }
+
+                        .background-9 {
+                            background: linear-gradient(to right, #a8ff78 0%, #78ffd6 100%);
+                        }
+
+                        .background-10 {
+                            background: linear-gradient(to right, #12c2e9 0%, #c471ed 100%);
+                        }
+                    </style>
+                    <div style="display: flex">
+                        <div style="width: 50%">
+                            <div class="title center-align aos-init aos-animate" data-aos="zoom-in-up" id="add_color">
+                                <i class="far fa-chart-bar"></i>&nbsp;&nbsp;文章分类统计图
+                            </div>
+                            <div id="posts-chart" data-aos="zoom-in-up" style="width: 100%; height: 345px;"></div>
+                        </div>
+                        <div style="width: 50%">
+                            <div class="title center-align aos-init aos-animate" data-aos="zoom-in-up" id="add_color">
+                                <i class="fas fa-chart-area"></i>&nbsp;&nbsp;发布文章活跃度
+                            </div>
+                            <div id="active_type" data-aos="zoom-in-up"
+                                 style="width: 450px; height: 355px;left: 108px;top: -66px;"></div>
+                        </div>
+                    </div>
+                    <div class="my-skills" style="padding: 0px">
+                        <div class="title center-align" data-aos="zoom-in-up" id="add_color">
+                            <i class="fas fa-wrench"></i>&nbsp;&nbsp;{{ about.skill_title }}
+                        </div>
+                        <div class="row">
+                            {% for s in skill %}
+                                <div class="col s12 m6 l6" data-aos="fade-up">
+                                    <div class="skillbar">
+                                        <div class="skillbar-title background-{% random_num %}"
+                                             style=" width: {{ s.skill_precent }}">
+                                            <span>{{ s.skill_name }}</span>
+                                        </div>
+                                        <div class="skill-bar-percent">{{ s.skill_precent }}</div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="my-skills" style="padding: 0px">
+                            <div class="title center-align" data-aos="zoom-in-up" id="add_color">
+                                <div><i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;游广东</div>
+                                <div class="legend"
+                                     style="text-align: center;justify-content: center;margin-left: 53px;margin-top: 10px" id="add_color">
+                                    <div class="legend-item">
+                                        <div class="legend-circle green"></div>
+                                        经常去
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-circle light-green"></div>
+                                        去过几次
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-circle yellow"></div>
+                                        去过一次
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-circle gray"></div>
+                                        没去过
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div id="gd-map" data-aos="zoom-in-up"
+                                     style="width: 100%; height: 600px;top:-72px"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </main>
+{% endblock %}
+{% block js %}
+    <script src="{% static 'js/echarts.js' %}"></script>
+    <script type="text/javascript">
+
+
+    </script>
+    <script type="text/javascript">
+        let theme = localStorage.getItem('theme') || '';
+        let myChart1 = echarts.init(document.getElementById('active_type'), theme)
+        let myChart2 = echarts.init(document.getElementById('posts-chart'), theme)
+        let isDarkMode = theme === 'dark'; // 判断是否为暗色主题
+        let chart = echarts.init(document.getElementById('gd-map'));
+        window.addEventListener('themeChanged', function (event) {
+            const newTheme = event.detail; // 获取传递的主题名称
+            updateChartsTheme(newTheme);
+        });
+
+        // 动态更新 ECharts 主题
+        function updateChartsTheme(newTheme) {
+            myChart1.dispose();
+            myChart2.dispose();
+            if (newTheme === 'dark') {
+                theme = newTheme; // 更新当前主题
+            } else {
+                theme = ''
+            }
+            isDarkMode = theme === 'dark';
+            const mapOption = chart.getOption();
+            mapOption.series[0].label.textStyle.color = isDarkMode ? '#FFFFFF' : '#000000';
+            mapOption.series[0].itemStyle.borderColor =  isDarkMode ? '#f6d9d9' : '#3c2c35';
+            chart.setOption(mapOption);
+            myChart1 = echarts.init(document.getElementById('active_type'), theme)
+            myChart2 = echarts.init(document.getElementById('posts-chart'), theme)
+            initPie(); // 重新初始化饼图
+            initChart(); // 重新初始化折线图
+        }
+
+        $(function () {
+            initPie();
+            initChart();
+            initMap();
+        });
+
+        function initMap() {
+            fetch('https://geojson.cn/api/china/440000.json') // 替换为你的 GeoJSON 数据链接
+                .then(response => response.json())
+                .then(geoJson => {
+                    echarts.registerMap('guangdong', geoJson);
+                    let option1 = {
+                        title: {
+                            left: 'center',
+                            textStyle: {
+                                fontSize: 18,
+                                fontWeight: 'bold'
+                            },
+                            subtextStyle: {
+                                fontSize: 12,
+                                color: '#666'
+                            }
+                        },
+
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: function (params) {
+                                if (params.value === 1) {
+                                    return `${params.name}: 去过一次`;
+                                } else if (params.value > 1 && params.value <= 5) {
+                                    return `${params.name}: 去过几次`;
+                                } else if (params.value > 5 && params.name !='潮州'&&params.name !='广州') {
+                                    return `${params.name}: 经常去`;
+                                } else if (params.name === '潮州') {
+                                    return `${params.name}: 我的家乡`;
+                                } else if (params.name === '广州') {
+                                    return `${params.name}: 我上学的地方`;
+                                } else {
+                                    return `${params.name}: 还没去过`;
+                                }
+                            }
+                        },
+                        visualMap: {
+                            min: 0,
+                            max: 20,
+                            left: 'left',
+                            top: 'bottom',
+                            text: ['经常去', '去过几次', '去过一次', '没去过'],
+                            pieces: [
+                                {min: 6, label: '经常去', color: '#4bae4f'}, // 对应 "经常去"
+                                {min: 2, max: 5, label: '很少去', color: '#8ac149'}, // 对应 "很少去"
+                                {min: 1, max: 1, label: '去过一次', color: '#fde93b'}, // 对应 "去过一次"
+                                {max: 0, label: '没去过', color: '#fdfdfd'} // 对应 "没去过"
+                            ],
+                            show: false
+                        },
+                        series: [
+                            {
+                                name: '广东省地图',
+                                type: 'map',
+                                map: 'guangdong',
+                                label: {
+                                    show: true,
+                                    color: '#000', // 设置默认市名颜色为黑色
+                                    textStyle: {
+                                        fontSize: 10, // 字体大小
+                                        fontWeight: 'bold', // 字体加粗
+                                        color: isDarkMode ? '#FFFFFF' : '#000000' // 根据主题设置标题颜色
+                                    },
+                                    rich: {
+                                        highlight: {
+                                            color: '#ff0000', // 特殊市名颜色为红色
+                                            fontWeight: 'bold',
+                                            fontSize: 14,
+                                        }
+                                    }
+                                },
+                                itemStyle: {
+                                    borderColor: isDarkMode ? '#f6d9d9' : '#3c2c35',
+                                    borderWidth: 1,
+                                    areaColor: '#fff',
+                                    emphasis: {
+                                        areaColor: '#d6cb0e'
+                                    }
+                                },
+                                data: []
+                            }
+                        ]
+                    };
+                    $.ajax({
+                        url: '/echarts_city/',
+                        type: 'get',
+                        dataType: "JSON",
+                        success: function (res) {
+                            if (res.status) {
+                                option1.series[0].data = res.data.data_list
+                                chart.setOption(option1);
+
+                            }
+                        }, error: function (xhr, status, error) {
+                            console.error('AJAX 请求失败:', status, error);
+                            console.log('响应内容:', xhr.responseText);
+                        }
+                    })
+                })
+                .catch(err => {
+                    console.error('加载广东省 GeoJSON 失败:', err);
+                });
+
+        }
+
+        function initChart() {
+            option = {
+                backgroundColor: 'transparent', // 禁用背景色
+                // Make gradient line here
+                visualMap: {
+                    show: false,
+                    type: 'continuous',
+                    min: 0,
+                    max: 10
+                },
+                tooltip: {
+                    trigger: 'axis',
+                },
+                xAxis: {
+                    data: []
+                },
+                yAxis: {},
+                series: [
+                    {
+                        type: 'line',
+                        showSymbol: false,
+                        data: []
+                    }
+                ]
+            };
+            $.ajax({
+                url: '/echarts_activate/',
+                type: 'get',
+                dataType: 'JSON',
+                success: function (res) {
+                    if (res.status) {
+                        option.xAxis.data = res.data.datalist
+                        option.series[0].data = res.data.valuelist
+                        myChart1.setOption(option);
+                    }
+                }
+            })
+
+        }
+
+        function initPie() {
+            var option = {
+                backgroundColor: 'transparent', // 禁用背景色
+                toolbox: {
+                    feature: {}
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b} : {c} ({d}%)'
+                },
+                series: [
+                    {
+                        name: '具体数据',
+                        type: 'pie',
+                        radius: [20, 100],
+                        center: ['50%', '30%'],
+                        roseType: 'area',
+                        itemStyle: {
+                            borderRadius: null
+                        },
+                        data: []
+                    }
+                ]
+            };
+            $.ajax({
+                url: "/echarts_category/",
+                type: "get",
+                dataType: "JSON",
+                success: function (res) {
+                    if (res.status) {
+                        option.series[0].data = res.data.data_list
+                        option.series[0].itemStyle.borderRadius = res.data.count
+                    }
+                    myChart2.setOption(option);
+                },
+                error: function (err) {
+                    console.error("AJAX 请求失败:", err);
+                }
+            })
+        }
+    </script>
+{% endblock js %}
