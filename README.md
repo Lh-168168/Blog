@@ -24,7 +24,7 @@ Python：Python3.8
 
 ![image-20241126190340251](https://github.com/Lh-168168/Blog/blob/main/assets/image-20241126190340251.png)
 
-![image-20241126190407267](D:\Py_Location\django-matery-blog-master\Blog\assets\image-20241126190407267.png)
+![image-20241126190407267]([D:\Py_Location\django-matery-blog-master\Blog\assets](https://github.com/Lh-168168/Blog/blob/main/assets/image-20241126190407267.png)
 
 #### 首页
 
