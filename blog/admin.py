@@ -6,8 +6,8 @@ from django.db import models
 #admin.site.register(Article)
 
 #修改后台管理页面头部显示内容和后台名称
-admin.site.site_header = 'Covteam后台'
-admin.site.site_title = 'CovTeam | 后台'
+admin.site.site_header = '祖国万岁'
+admin.site.site_title = '祖国万岁 | 后台'
 
 
 #文章

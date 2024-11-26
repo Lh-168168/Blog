@@ -1,9 +1,7 @@
-from symbol import namedexpr_test
+from tkinter.font import names
 
 from django.urls import path
 from blog import views
-from django.contrib.staticfiles.views import serve
-from django.views.generic.base import RedirectView
 urlpatterns = [
     #首页
     path('', views.index,name='index'),
@@ -39,7 +37,21 @@ urlpatterns = [
 
     #留言板
     path('message/',views.message,name='message'),
-    path('friend/',views.friend,name='friend')
+    path('friend/',views.friend,name='friend'),
+    path('edit/', views.edit, name='edit'),
+
+    path('login/',views.login,name='login'),
+    path('register/',views.register,name='register'),
+
+    path('code_image/',views.create_valimg,name='code_image'),
+    path('reset_pwd/',views.resetpwd,name='reset_pwd'),
+
+    path('send_email/',views.send_email,name='send_email'),
+
+    path('logout/',views.logout,name='logout')
+
+    # path('test/',views.test,name='test')
+
 
 ]
 

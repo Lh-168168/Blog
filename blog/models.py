@@ -69,9 +69,9 @@ class Article(models.Model):
     add_time = models.DateTimeField(default=datetime.now, verbose_name='发布时间')
     # 文章更新时间。参数 auto_now=True 指定每次数据更新时自动写入当前时间
     update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
-    category = models.ForeignKey(Category, blank=True, null=True, verbose_name='文章分类', on_delete=models.CASCADE)
+    category = models.ForeignKey(Category,to_field="id", blank=True, null=True, verbose_name='文章分类', on_delete=models.CASCADE)
     tag = models.ManyToManyField(Tag,blank=True, verbose_name='文章标签')
-    years = models.ForeignKey(Year, blank=True, null=True,verbose_name='所属年份',on_delete=models.CASCADE)
+    years = models.ForeignKey(Year,to_field="id", blank=True, null=True,verbose_name='所属年份',on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = '文章'
@@ -195,3 +195,8 @@ class City(models.Model):
 
     def __str__(self):
         return self.name
+
+class User(models.Model):
+    name = models.CharField(max_length=10,verbose_name="用户名")
+    password = models.CharField(max_length=64,verbose_name='密码')
+    email = models.EmailField(max_length=22,null=True,blank=True,verbose_name="邮箱")

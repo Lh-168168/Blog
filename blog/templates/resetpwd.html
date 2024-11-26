@@ -1,0 +1,358 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>祖国万岁 | 重置</title>
+    <style>
+        .bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            object-fit: cover;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .box_new {
+            width: 950px;
+            height: 450px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.8);
+            display: flex;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-sizing: border-box;
+            padding: 20px;
+            background: rgb(115, 167, 163, 0.8);
+        }
+
+        .left {
+            width: 65%;
+        }
+
+        .left > img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .right {
+            width: 35%;
+            height: 100%;
+            box-sizing: border-box;
+            padding: 0 20px;
+        }
+
+        h1 {
+            color: #fff;
+            text-align: center;
+            margin-top: 3px;
+        }
+        .error-message1 {
+            color: red;
+            font-size: 12px;
+            position: absolute;
+            left: 66px; /* 错误信息距离输入框右侧一定距离 */
+            top: 50%; /* 错误信息垂直居中 */
+            transform: translateY(-50%);
+            white-space: nowrap; /* 防止文字换行 */
+        }
+        .inputItem {
+            height: 32px;
+            padding: 0;
+            padding-left: 8px;
+            border: none;
+            background: #fff;
+            outline: none;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background: linear-gradient(to right, #59aea4, #5c8682);
+            box-shadow: 0 5px 15px rgb(255, 255, 255, 0.6);
+            color: #9c3434;
+            font-weight: bold;
+            border: none;
+            border-radius: 30px;
+            height: 46px;
+            width: 100%;
+            font-size: 18px;
+            display: block;
+            margin: auto;
+            margin-top: 50px;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 21px
+        }
+
+        .form-group input {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 12px;
+            position: absolute;
+            right: 10px; /* 错误信息距离输入框右侧一定距离 */
+            top: 50%; /* 错误信息垂直居中 */
+            transform: translateY(-50%);
+            white-space: nowrap; /* 防止文字换行 */
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn {
+            display: block;
+            margin: 5px auto;
+        }
+
+    </style>
+</head>
+<body>
+<img src="{% static 'img/login.png' %}" class="bg">
+
+<div class="box_new">
+    <div class="left">
+        <img src="{% static 'img/login.png' %}" alt="">
+    </div>
+    <div class="right">
+        <h1>重置密码</h1>
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.name }}
+                <span class="error-message" style="color: red">{{ form.name.errors.0 }}</span>
+            </div>
+            <div class="form-group">
+                <div class="row" style="display: flex">
+                    <div class="col-xs-7">
+                         {{ form.email }}
+                        <span class="error-message1" style="color: red">{{ form.email.errors.0 }}</span>
+                    </div>
+                    <div class="col-xs-5">
+                       <button type="button" onclick="sendEmail()" style="    height: 35px;
+    width: 100px;">发送邮件</button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form.code }}
+                <span class="error-message" style="color: red">{{ form.code.errors.0 }}</span>
+            </div>
+            <div class="form-group">
+                {{ form.password }}
+                <span class="error-message" style="color: red">{{ form.password.errors.0 }}</span>
+            </div>
+            <div class="form-group">
+                {{ form.confirm_password }}
+                <span class="error-message" style="color: red">{{ form.confirm_password.errors.0 }}</span>
+            </div>
+            <button class="btn" type="submit">确认</button>
+        </form>
+
+    </div>
+</div>
+</body>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script>
+let countdown; // 用来保存 setInterval 的 ID
+let timeLeft = localStorage.getItem('timeLeft') ? parseInt(localStorage.getItem('timeLeft')) : 300; // 从 localStorage 获取倒计时，如果没有则为5秒
+
+// 页面加载时恢复倒计时
+$(document).ready(function () {
+    if (timeLeft > 0) {
+        // 页面刷新时恢复倒计时状态
+        const button = $('button[type="button"]');
+        button.prop('disabled', true);
+        button.text(`发送邮件 (${timeLeft}s)`);
+
+        countdown = setInterval(function () {
+            timeLeft--; // 每秒减少1
+
+            // 更新按钮文本
+            button.text(`发送邮件 (${timeLeft}s)`);
+
+            // 保存当前倒计时状态到 localStorage
+            localStorage.setItem('timeLeft', timeLeft);
+
+            // 当倒计时结束时，重新启用按钮
+            if (timeLeft <= 0) {
+                clearInterval(countdown); // 停止倒计时
+                button.prop('disabled', false); // 启用按钮
+                button.text('发送邮件'); // 重置按钮文本
+                timeLeft = 5; // 重置倒计时时间
+                localStorage.removeItem('timeLeft'); // 清除倒计时记录
+            }
+        }, 1000); // 每秒更新一次
+    }
+});
+
+function sendEmail() {
+    // 获取邮箱输入框的值
+    const email = $('input[name="email"]').val();
+
+    if (!email) {
+        alert("请输入邮箱地址");
+        return;
+    }
+
+    // 禁用按钮并开始倒计时
+    const button = $('button[type="button"]');
+    button.prop('disabled', true);
+    button.text(`发送邮件 (${timeLeft}s)`);
+
+    // 开始倒计时
+    countdown = setInterval(function () {
+        timeLeft--; // 每秒减少1
+
+        // 更新按钮文本
+        button.text(`发送邮件 (${timeLeft}s)`);
+
+        // 保存当前倒计时状态到 localStorage
+        localStorage.setItem('timeLeft', timeLeft);
+
+        // 当倒计时结束时，重新启用按钮
+        if (timeLeft <= 0) {
+            clearInterval(countdown); // 停止倒计时
+            button.prop('disabled', false); // 启用按钮
+            button.text('发送邮件'); // 重置按钮文本
+            timeLeft = 5; // 重置倒计时时间
+            localStorage.removeItem('timeLeft'); // 清除倒计时记录
+        }
+    }, 1000); // 每秒更新一次
+
+    // 使用 AJAX 向后端发送请求
+    $.ajax({
+        url: '/send_email/', // 替换为后端邮件发送接口的URL
+        type: 'POST',
+        data: {
+            email: email,
+            csrfmiddlewaretoken: '{{ csrf_token }}' // Django CSRF Token
+        },
+        success: function (response) {
+            // 根据后端返回的结果处理逻辑
+            if (response.status) {
+              
+            } else {
+                alert(response.error || "邮件发送失败");
+            }
+        },
+        error: function () {
+            alert("邮件发送过程中出现错误");
+        }
+    });
+}
+</script>
+{#<script>#}
+{#let countdown; // 用来保存 setInterval 的 ID#}
+{#let timeLeft = 5; // 设置倒计时为300秒#}
+{##}
+{#function sendEmail() {#}
+{#    // 获取邮箱输入框的值#}
+{#    const email = $('input[name="email"]').val();#}
+{##}
+{#    if (!email) {#}
+{#        alert("请输入邮箱地址");#}
+{#        return;#}
+{#    }#}
+{##}
+{#    // 禁用按钮并开始倒计时#}
+{#    const button = $('button[type="button"]');#}
+{#    button.prop('disabled', true);#}
+{#    button.text(`发送邮件 (${timeLeft}s)`);#}
+{##}
+{#    // 开始倒计时#}
+{#    countdown = setInterval(function () {#}
+{#        timeLeft--; // 每秒减少1#}
+{##}
+{#        // 更新按钮文本#}
+{#        button.text(`发送邮件 (${timeLeft}s)`);#}
+{##}
+{#        // 当倒计时结束时，重新启用按钮#}
+{#        if (timeLeft <= 0) {#}
+{#            clearInterval(countdown); // 停止倒计时#}
+{#            button.prop('disabled', false); // 启用按钮#}
+{#            button.text('发送邮件'); // 重置按钮文本#}
+{#            timeLeft = 5; // 重置倒计时时间#}
+{#        }#}
+{#    }, 1000); // 每秒更新一次#}
+{##}
+{#    // 使用 AJAX 向后端发送请求#}
+{#    $.ajax({#}
+{#        url: '/send_email/', // 替换为后端邮件发送接口的URL#}
+{#        type: 'POST',#}
+{#        data: {#}
+{#            email: email,#}
+{#            csrfmiddlewaretoken: '{{ csrf_token }}' // Django CSRF Token#}
+{#        },#}
+{#        success: function (response) {#}
+{#            // 根据后端返回的结果处理逻辑#}
+{#            if (response.status) {#}
+{#                alert("邮件发送成功");#}
+{#            } else {#}
+{#                alert(response.error || "邮件发送失败");#}
+{#            }#}
+{#        },#}
+{#        error: function () {#}
+{#            alert("邮件发送过程中出现错误");#}
+{#        }#}
+{#    });#}
+{#}#}
+{##}
+{##}
+{#</script>#}
+{#<script>#}
+{#function sendEmail() {#}
+{#    // 获取邮箱输入框的值#}
+{#    const email = $('input[name="email"]').val();#}
+{##}
+{#    if (!email) {#}
+{#        alert("请输入邮箱地址");#}
+{#        return;#}
+{#    }#}
+{##}
+{#    // 使用 AJAX 向后端发送请求#}
+{#    $.ajax({#}
+{#        url: '/send_email/', // 替换为后端邮件发送接口的URL#}
+{#        type: 'POST',#}
+{#        data: {#}
+{#            email: email,#}
+{#            csrfmiddlewaretoken: '{{ csrf_token }}' // Django CSRF Token#}
+{#        },#}
+{#        success: function (response) {#}
+{#            // 根据后端返回的结果处理逻辑#}
+{#            if (response.status) {#}
+{#                alert("邮件发送成功");#}
+{#            } else {#}
+{#                alert(response.error || "邮件发送失败");#}
+{#            }#}
+{#        },#}
+{#        error: function () {#}
+{#            alert("邮件发送过程中出现错误");#}
+{#        }#}
+{#    });#}
+{#}#}
+{##}
+{#</script>#}
+
+</html>
+{#<input type="text" class="inputItem" placeholder="请输入名称" name="name">#}
+{#<input type="text" class="inputItem" placeholder="请输入密码" name="password">#}
+{#<input type="text" class="inputItem" placeholder="请确认密码" name="password_2">#}
+{#<input type="text" class="inputItem" placeholder="请输入邮箱" name="email">#}
+{#<input type="text" class="inputItem" placeholder="请输入验证码" name="image_code">#}
+
+

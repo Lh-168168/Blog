@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
+from django.conf.global_settings import EMAIL_BACKEND
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -54,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'blog.middleware.auth.AuthMiddleware'
 ]
 
 ROOT_URLCONF = 'Django_Blog.urls'
@@ -154,7 +157,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
 
 
 #SimpleUi后台设置
-SIMPLEUI_LOGO = 'https://i.loli.net/2020/04/23/jGP8gQOYW75TSJp.png' #登录页和后台logo
+SIMPLEUI_LOGO = 'http://127.0.0.1:8000/media/img/img.png' #登录页和后台logo
 SIMPLEUI_ANALYSIS = False #是否向SimpleUi收集分析信息
 SIMPLEUI_LOADING = False #是否打开Loading遮罩层
 SIMPLEUI_LOGIN_PARTICLES = True #登录页粒子动画
@@ -234,12 +237,12 @@ SIMPLEUI_CONFIG = {
         'name': '网页预览',
         'icon': 'fas fa-paper-plane',
         'models': [{
-            'name': 'CovTeam',
-            'url': 'http://covteam.jwt1399.top/',
+            'name': '友链',
+            'url': 'http://127.0.0.1:8000/friend',
             'icon': 'fab fa-wolf-pack-battalion'
         }, {
-            'name': '简简',
-            'url': 'https://jwt1399.top',
+            'name': '小祖',
+            'url': 'http://127.0.0.1:8000/index',
             'icon': 'fas fa-crown'
         }]
     }]
@@ -283,3 +286,24 @@ LOGGING = {
         },
     }
 }
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',  # Redis 的地址和数据库号
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+        'KEY_PREFIX': 'myapp'  # 可选，防止多个项目的缓存键冲突
+    }
+}
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_PORT = '25'
+EMAIL_HOST_USER = '1850925656@qq.com'
+EMAIL_HOST_PASSWORD = 'ehzntppeocsvdcbg'
+EMAIL_FROM = 'admin<1850925656@qq.com>'
+EMAIL_USE_TLS=True
+
+
+

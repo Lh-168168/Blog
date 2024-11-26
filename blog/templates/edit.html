@@ -1,0 +1,270 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% load custom_tag %}
+{% block title %}创建文章  {% endblock %}
+{% block banner %}
+    <div class="bg-cover pd-header about-cover">
+        <div class="container">
+            {% include 'layout/banner.html' %}
+        </div>
+    </div>
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'editor.md-master/css/editormd.min.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+
+    <style>
+
+        /* 调整 Select2 输入框和标签的样式 */
+        .select2-container .select2-selection--multiple {
+            border: 1px solid #ced4da; /* 边框颜色 */
+            border-radius: 0.25rem; /* 圆角 */
+            padding: 0.375rem 0.5rem; /* 内边距，调整上下边距 */
+            height: 20px;
+        }
+
+        /* 标签之间的间距 */
+        .select2-container .select2-selection__choice {
+            margin: 2px 2px 2px 0; /* 标签之间的间距 */
+            padding: 0 10px; /* 标签内文字的左右内边距 */
+            font-size: 0.875rem; /* 标签文字大小 */
+            line-height: 1; /* 标签行高 */
+        }
+
+        /* 去掉多余的空白区域 */
+        .select2-container .select2-selection__rendered {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 调整 Select2 多选框的高度 */
+        .select2-container .select2-selection--multiple {
+            height: 40px; /* 设置高度 */
+            padding: 5px 10px; /* 调整内边距 */
+            border: 1px solid #ced4da; /* 边框颜色 */
+            border-radius: 0.25rem; /* 圆角 */
+        }
+
+        /* 调整下拉选择框中的选项高度 */
+        .select2-container .select2-results__option {
+            padding: 5px 10px; /* 控制选项的高度 */
+            line-height: 1.5; /* 调整选项内容的行高 */
+        }
+
+        /* 标签之间的间距 */
+        .select2-container .select2-selection__choice {
+            margin: 2px 2px 2px 0; /* 标签之间的间距 */
+            padding: 0 10px; /* 标签内文字的左右内边距 */
+            font-size: 0.875rem; /* 标签文字大小 */
+            line-height: 1.5; /* 标签行高 */
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__clear {
+            cursor: pointer;
+            float: right;
+            font-weight: bold;
+            margin-top: 1px;
+            margin-right: 10px;
+            padding: 1px;
+        }
+
+        /* 鼠标悬停时的效果 */
+        .select2-container .select2-selection--multiple:hover {
+            border-color: #80bdff; /* 悬停时边框颜色 */
+        }
+
+        select.form-control {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+
+        /* 去掉 Select2 的边框 */
+        #tag.select2-container .select2-selection {
+            border: none; /* 去掉边框 */
+            border-radius: 0; /* 去掉圆角 */
+            height: 20px; /* 调整高度 */
+        }
+
+        /* 调整下拉项的高度 */
+        #tag.select2-container .select2-results__option {
+            padding: 5px 10px; /* 调整选项的高度 */
+        }
+
+        .select2-container .select2-search--inline .select2-search__field {
+            box-sizing: border-box;
+            border: none;
+            font-size: 100%;
+            margin-top: -8px;
+            padding: 0;
+        }
+
+        /* 通用样式，适配所有 select 元素 */
+        select.form-control {
+            display: block;
+            width: 100%;
+            height: auto; /* 自动调整高度 */
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            appearance: none;
+            box-shadow: inset 0 1px 2px rgb(0 0 0 / 8%);
+        }
+
+        /* 针对多选框的样式 */
+        select[multiple].form-control {
+            height: 100px; /* 自定义多选框高度 */
+            overflow-y: auto; /* 启用滚动条 */
+        }
+        
+
+    </style>
+
+{% endblock css %}
+{% block contents %}
+
+    <main class="content">
+        <div id="indexCard" class="index-card">
+            <div class="container">
+                <div class="card" id="add_color">
+                    <div class="tag-title center-align" style="margin-top: 10px">
+                        <i class="fas fa-address-book" style="font-size: 26px;margin-top: 28px"></i>&nbsp;&nbsp;
+                        <span style="font-size: 26px;margin-top: 10px">访客分享</span>
+                    </div>
+                    <div>
+                        <form method="post" novalidate>
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <div class="form-group" style="margin-left: 150px;margin-right: 150px;" id="add_color">
+                                    <label>{{ field.label }}</label>
+                                    {{ field }}
+                                    <span id="add_color">{{ field.errors.0 }}</span>
+                                </div>
+                            {% endfor %}
+                            <button type="submit" class="btn btn-primary" style="background-color: #e1878c;;margin-left: 150px;margin-top: 10px;margin-bottom: 10px;">提交
+                            </button>
+                        </form>
+                    </div>
+
+                    {#                    <form method="post" class="card-content" style="width: 100%" id="articleForm" novalidate>#}
+                    {#                        {% csrf_token %}#}
+                    {#                        <div class="form-group">#}
+                    {#                            <label>标题</label>#}
+                    {#                            <input type="text" class="form-control" placeholder="标题" name="title">#}
+                    {#                        </div>#}
+                    {#                        <div class="form-group">#}
+                    {#                            <label>作者</label>#}
+                    {#                            <input type="text" class="form-control" placeholder="作者" name="author">#}
+                    {#                        </div>#}
+                    {#                        <div class="form-group">#}
+                    {#                            <label>文章描述</label>#}
+                    {#                            <input type="text" class="form-control" placeholder="描述" name="desc">#}
+                    {#                        </div>#}
+                    {#                        <div class="form-group">#}
+                    {#                            <label>文章封面</label>#}
+                    {#                            <input type="text" class="form-control" placeholder="文章封面" name="cover">#}
+                    {#                        </div>#}
+                    {#                        <div class="form-group">#}
+                    {#                            <label>文章内容</label>#}
+                    {#                            <div id="editor" class="form-control" contenteditable="true" placeholder="内容"></div>#}
+                    {#                            <input type="hidden" name="content" id="content-hidden">#}
+                    {#                        </div>#}
+                    {#                        <div class="form-group">#}
+                    {#                            <label>年份</label>#}
+                    {#                            <select class="form-control" id="years" name="years">#}
+                    {#                                <option value="">请选择年份</option>#}
+                    {#                                {% for year in years %}#}
+                    {#                                    <option value="{{ year.id }}">{{ year.year }}</option>#}
+                    {#                                {% endfor %}#}
+                    {#                            </select>#}
+                    {#                        </div>#}
+                    {#                        <div class="form-group">#}
+                    {#                            <label>分类</label>#}
+                    {#                            <select class="form-control" id="category" name="category">#}
+                    {#                                <option value="">请选择分类</option>#}
+                    {#                                {% for cat in categorys %}#}
+                    {#                                    <option value="{{ cat.id }}">{{ cat.name }}</option>#}
+                    {#                                {% endfor %}#}
+                    {#                            </select>#}
+                    {#                        </div>#}
+                    {#                        <div class="form-group display">#}
+                    {#                            <label>标签</label>#}
+                    {#                            <select multiple class="form-control" id="tag" name="tag">#}
+                    {#                                <option value="">请选择标签</option>#}
+                    {#                                {% for tag in tags %}#}
+                    {#                                    <option value="{{ tag.id }}">{{ tag.name }}</option>#}
+                    {#                                {% endfor %}#}
+                    {#                            </select>#}
+                    {#                            <small class="form-text text-muted" id="add_color">按住 Ctrl 或 Shift 键多选标签。</small>#}
+                    {#                        </div>#}
+                    {##}
+                    {#                        <button type="submit" class="btn btn-primary">提交</button>#}
+                    {##}
+                    {#                    </form>#}
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+
+{% endblock %}
+{% block js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+    <script type="text/javascript" src="{% static 'editor.md-master/lib/marked.min.js' %}"></script>
+    <script src="{% static 'editor.md-master/lib/prettify.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'editor.md-master/editormd.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            // 初始化 Select2
+            $('#tag').select2({
+                placeholder: "请选择标签",
+                allowClear: true
+            });
+
+            // 初始化编辑器
+            var editor = editormd("editor", {
+                width: "100%",
+                height: "500px",
+                markdown: "# 在这里写下一篇博客",
+                path: "{% static 'editor.md-master/lib/' %}"
+            });
+
+            // 提交表单时，将编辑器内容存储到隐藏字段
+            document.getElementById('articleForm').addEventListener('submit', function () {
+                const markdownContent = editor.getMarkdown();
+                document.getElementById('content-hidden').value = markdownContent;
+            });
+
+            // 使用 MutationObserver 监控 editormd-fullscreen 类的变化
+            const observer = new MutationObserver(function (mutations) {
+                mutations.forEach(function (mutation) {
+                    if (mutation.target.classList.contains('editormd-fullscreen')) {
+                        // 如果添加了 editormd-fullscreen 类
+                        $('#tag').closest('.form-group').css('display', 'none');
+                    } else {
+                        // 如果移除了 editormd-fullscreen 类
+                        $('#tag').closest('.form-group').css('display', 'block');
+                    }
+                });
+            });
+
+            // 配置观察器，监听 class 属性的变化
+            const config = {attributes: true, childList: false, subtree: false};
+
+            // 选择要观察的节点，这里是编辑器容器
+            const targetNode = document.getElementById('editor');
+
+            // 开始观察
+            observer.observe(targetNode, config);
+        });
+
+    </script>
+{% endblock js %}

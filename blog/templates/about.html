@@ -214,7 +214,8 @@
                             <div class="title center-align" data-aos="zoom-in-up" id="add_color">
                                 <div><i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;游广东</div>
                                 <div class="legend"
-                                     style="text-align: center;justify-content: center;margin-left: 53px;margin-top: 10px" id="add_color">
+                                     style="text-align: center;justify-content: center;margin-left: 53px;margin-top: 10px"
+                                     id="add_color">
                                     <div class="legend-item">
                                         <div class="legend-circle green"></div>
                                         经常去
@@ -241,6 +242,7 @@
                     </div>
                 </div>
             </div>
+        </div>
     </main>
 {% endblock %}
 {% block js %}
@@ -272,7 +274,7 @@
             isDarkMode = theme === 'dark';
             const mapOption = chart.getOption();
             mapOption.series[0].label.textStyle.color = isDarkMode ? '#FFFFFF' : '#000000';
-            mapOption.series[0].itemStyle.borderColor =  isDarkMode ? '#f6d9d9' : '#3c2c35';
+            mapOption.series[0].itemStyle.borderColor = isDarkMode ? '#f6d9d9' : '#3c2c35';
             chart.setOption(mapOption);
             myChart1 = echarts.init(document.getElementById('active_type'), theme)
             myChart2 = echarts.init(document.getElementById('posts-chart'), theme)
@@ -311,7 +313,7 @@
                                     return `${params.name}: 去过一次`;
                                 } else if (params.value > 1 && params.value <= 5) {
                                     return `${params.name}: 去过几次`;
-                                } else if (params.value > 5 && params.name !='潮州'&&params.name !='广州') {
+                                } else if (params.value > 5 && params.name != '潮州' && params.name != '广州') {
                                     return `${params.name}: 经常去`;
                                 } else if (params.name === '潮州') {
                                     return `${params.name}: 我的家乡`;

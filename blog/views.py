@@ -1,29 +1,143 @@
-from calendar import day_abbr
+import random
+import string
 from email.policy import default
-from lib2to3.fixes.fix_input import context
-from msilib import datasizemask
+from io import BytesIO
 import json
-import logging
 import traceback
-from tempfile import template
 from venv import logger
-
-from django.contrib.admin.templatetags.admin_list import result_list
-from setuptools.package_index import unique_values
-
+from django.core.cache import cache
 from blog.utils.Pagination import Pagination
-from django.http import JsonResponse
-from django.shortcuts import render
-from django.db.models import F, Q, Count
-from wheel.cli import tags_f
-from itertools import groupby, count
-from .models import Article, Link, Category, Tag, Notice, Valine, About, Site, Social, Skill,Year,City
+from django.http import JsonResponse, HttpResponse
+from django.shortcuts import render, redirect
+from django.db.models import  Q, Count
+from .models import Article, Link, Category, Tag, Notice, Valine, About, Site, Social, Skill,Year,City,User
 import mistune
-from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
-import markdown
+from pure_pagination import Paginator, PageNotAnInteger
 import datetime
-from django.db.models.functions import ExtractMonth, TruncDate
-from collections import defaultdict
+from django.db.models.functions import  TruncDate
+from blog.utils.Form import editForm,RegisterForm,LoginForm,ResetPassword
+from .utils.Verification import check_code
+from django.core.mail import send_mail
+
+
+def send_email(request):
+    if request.method == "POST":
+        try:
+            email = request.POST.get('email')
+            if not User.objects.filter(email=email).exists():
+                return JsonResponse({"status": False, "error": "当前邮箱未注册"})
+            if not email:
+                return JsonResponse({"status": False, "error": "邮箱地址不能为空！"})
+            #生成随机的六位数
+            source = list(string.digits)
+            code = "".join(random.sample(source,6))
+            cache.set('code',code,timeout=300)
+            print(code)
+            #发送邮件
+            subject = '博客验证码'
+            message = code
+            from_email = '1850925656@qq.com'
+            recipient_list = [str(email)]
+            send_mail(subject, message, from_email, recipient_list)
+            return JsonResponse({"status": True})
+        except Exception as e:
+            return JsonResponse({"status": False, "error": str(e)})
+    return JsonResponse({"status": False, "error": "只支持 POST 请求！"})
+
+
+
+def register(request):
+    if request.method == "GET":
+        form = RegisterForm()
+        context={
+            "form":form
+        }
+        return render(request, 'register.html',context)
+    else:
+        form = RegisterForm(data=request.POST)
+        if form.is_valid():
+            # 进行验证码校验
+            user_input_code =  form.cleaned_data.pop('code')
+            if user_input_code != request.session.get('image_code'):
+                form.add_error("code","验证码输入错误")
+                return render(request, 'register.html',{"form":form})
+            form.cleaned_data.pop('confirm_password')
+            form.save()
+            return redirect('login')
+
+
+        else:
+            return render(request, 'register.html', {"form": form})
+
+#验证码
+def create_valimg(request):
+    img, code_string = check_code()
+
+    # 写入自己的session中 以便后续验证
+    request.session['image_code'] = code_string
+    # session超时设置
+    request.session.set_expiry(60)
+
+    # 写入内存
+    stream = BytesIO()
+    img.save(stream, 'png')
+    print(code_string)
+    return HttpResponse(stream.getvalue())
+
+def resetpwd(request):
+    if request.method == 'GET':
+        form = ResetPassword()
+        return render(request,'resetpwd.html',{"form":form})
+    else:
+        form = ResetPassword(data=request.POST)
+        if form.is_valid():
+
+            code = form.cleaned_data.pop('code')
+            if cache.get('code') != code:
+                form.add_error("code","验证码错误")
+                return render(request, 'resetpwd.html', {"form": form})
+            else:
+                #这里重置密码直接把用户的密码修改就行
+                name = form.cleaned_data.get('name')
+                pwd = form.cleaned_data.get('password')
+                User.objects.filter(name=name).update(password=pwd)
+                return redirect('login')
+        else:
+            print(form.errors)
+            return render(request, 'resetpwd.html',{"form":form})
+
+
+def login(request):
+    if request.method == "GET":
+        form = LoginForm()
+        return render(request,'login.html',{"form":form})
+
+    else:
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            image_code = form.cleaned_data.pop('code')
+            if image_code != request.session.get('image_code'):
+                form.add_error("code","验证码错误")
+                return render(request, 'login.html', {'form': form})
+
+            user = User.objects.filter(**form.cleaned_data).first()
+            if not user:
+                form.add_error("password","用户名或者密码错误")
+                return render(request,'login.html',{'form': form})
+            else:
+                info = {
+                    "id":user.id,
+                    "name":user.name
+                }
+                request.session['info'] = info
+                request.session.set_expiry(60 * 3600 * 7)
+                return redirect("edit")
+        return render(request, 'login.html', {'form': form})
+
+def logout(request):
+    request.session.clear()
+    return redirect('index')
+
 def index(request):
     """首页展示"""
     # 取出所有博客文章
@@ -84,10 +198,52 @@ def article_detail(request, id):
     return render(request, 'article_detail.html', context)
 
 def member(request):
-    '''成员详情页'''
+    '''由友链详情页'''
     links = Link.objects.all()
-    context = {'links': links, }
+    context = {'links': links}
     return render(request, 'member.html', context)
+
+def edit(request):
+    default_name = request.session.get('info', {}).get('name', None)
+    if request.method == "GET":
+        catagorys = Category.objects.all()
+        tags = Tag.objects.all()
+        years = Year.objects.all()
+        context = {
+            "categorys":catagorys,
+            "tags":tags,
+            "years":years
+        }
+        form = editForm(default_name=default_name)
+        return render(request, 'edit.html', { "form": form})
+        # return render(request, 'edit.html', context)
+    else:
+        form = editForm(data=request.POST,default_name=default_name)
+        if form.is_valid():
+            article = form.save(commit=False)  # 如果你想在保存之前处理某些字段，可以使用 commit=False
+            article.save()
+            form.save_m2m()  # 确保多对多关系被保存
+            return redirect('index')
+        else:
+            return render(request, 'edit.html', { "form": form})
+
+
+        # title = request.POST.get('title')
+        # author = request.POST.get('author')
+        # desc = request.POST.get('desc')
+        # cover = request.POST.get('cover')
+        # content = request.POST.get('content')
+        # category_id = request.POST.get('category')
+        # years_id = request.POST.get('years')
+        # tag_id_list = request.POST.getlist('tag')
+        # article = Article.objects.create(title=title,author=author,desc=desc,cover=cover,content=content,
+        #                                  category_id=category_id,years_id=years_id)
+        # article.tag.set(tag_id_list)
+        # return redirect('index')
+
+
+
+
 
 def archive2(request,id):
     year = Year.objects.filter(id=id).first()

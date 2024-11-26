@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>祖国万岁 | 注册</title>
+    <style>
+        .bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            object-fit: cover;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .box_new {
+            width: 950px;
+            height: 450px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.8);
+            display: flex;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-sizing: border-box;
+            padding: 20px;
+            background: rgb(115, 167, 163, 0.8);
+        }
+
+        .left {
+            width: 65%;
+        }
+
+        .left > img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .right {
+            width: 35%;
+            height: 100%;
+            box-sizing: border-box;
+            padding: 0 20px;
+        }
+
+        h1 {
+            color: #fff;
+            text-align: center;
+            margin-top: 3px;
+        }
+
+        .inputItem {
+            height: 32px;
+            padding: 0;
+            padding-left: 8px;
+            border: none;
+            background: #fff;
+            outline: none;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background: linear-gradient(to right, #59aea4, #5c8682);
+            box-shadow: 0 5px 15px rgb(255, 255, 255, 0.6);
+            color: #9c3434;
+            font-weight: bold;
+            border: none;
+            border-radius: 30px;
+            height: 46px;
+            width: 100%;
+            font-size: 18px;
+            display: block;
+            margin: auto;
+            margin-top: 50px;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 21px
+        }
+
+        .form-group input {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 12px;
+            position: absolute;
+            right: 10px; /* 错误信息距离输入框右侧一定距离 */
+            top: 50%; /* 错误信息垂直居中 */
+            transform: translateY(-50%);
+            white-space: nowrap; /* 防止文字换行 */
+        }
+         .error-message1 {
+            color: red;
+            font-size: 12px;
+            position: absolute;
+            left: 66px; /* 错误信息距离输入框右侧一定距离 */
+            top: 50%; /* 错误信息垂直居中 */
+            transform: translateY(-50%);
+            white-space: nowrap; /* 防止文字换行 */
+        }
+        .row {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn {
+            display: block;
+            margin: 5px auto;
+        }
+
+    </style>
+</head>
+<body>
+<img src="{% static 'img/login.png' %}" class="bg">
+
+<div class="box_new">
+    <div class="left">
+        <img src="{% static 'img/login.png' %}" alt="">
+    </div>
+    <div class="right">
+        <h1>用户登录</h1>
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.name }}
+                <span class="error-message" style="color: red">{{ form.name.errors.0 }}</span>
+            </div>
+            <div class="form-group">
+                {{ form.password }}
+                <span class="error-message" style="color: red">{{ form.password.errors.0 }}</span>
+            </div>
+            <div class="form-group">
+                <div class="row" style="display: flex">
+                    <div class="col-xs-7">
+                        {{ form.code }}
+                        <span class="error-message1" style="color: red">{{ form.code.errors.0 }}</span>
+                    </div>
+                    <div class="col-xs-5">
+                        <img src="/code_image/" id="image_code" style="width: 126px;height: 33px;margin-bottom: -4px;" onclick="refreshCaptcha()">
+                    </div>
+                </div>
+                <span></span>
+            </div>
+            <button class="btn" type="submit">登录</button>
+        </form>
+        <div style="margin-top: 110px;text-align: center;">
+            <span><a  href="{% url 'reset_pwd' %}" style="text-decoration: none;color: inherit;">忘记密码？</a></span>
+            <span><a href="{% url 'register' %}" style="text-decoration: none;color: inherit;">注册账号</a></span>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    function refreshCaptcha() {
+        const captchaImage = document.getElementById("image_code");
+        captchaImage.src = "/code_image/?random=" + new Date().getTime(); // 加上时间戳，避免缓存
+    }
+</script>
+</html>
+{#<input type="text" class="inputItem" placeholder="请输入名称" name="name">#}
+{#<input type="text" class="inputItem" placeholder="请输入密码" name="password">#}
+{#<input type="text" class="inputItem" placeholder="请确认密码" name="password_2">#}
+{#<input type="text" class="inputItem" placeholder="请输入邮箱" name="email">#}
+{#<input type="text" class="inputItem" placeholder="请输入验证码" name="image_code">#}
+
+
