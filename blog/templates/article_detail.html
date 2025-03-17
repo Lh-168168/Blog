@@ -377,10 +377,15 @@
                     </div>
 
                     <div class="card-action article-tags">
-                        {% for tag in next_article.tag.all %}
-                        <a href="{% url 'article_tag' tag.id %}">
-                            <span class="chip tag-color">{{ tag }}</span>
-                        </a>
+                       {% if before_article.tag %}
+                        	  <a href="#">
+                                <span class="chip tag-color">None</span>
+                            </a>
+                        {% endif %} 
+                        {% for tag in before_article.tag.all %}
+                            <a href="{% url 'article_tag' tag.id %}">
+                                <span class="chip tag-color">{{ tag }}</span>
+                            </a>
                         {% endfor %}
                     </div>
 

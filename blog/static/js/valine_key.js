@@ -22,7 +22,7 @@ function LoadValine() {
             master: ["c0755245d884baa9f03f96553546c9f2", "c0755245d884baa9f03f96553546c9f2"],
             friends: ["2d723b084472eb5c3854616804b4851c"],
             tagMeta: ["博主", "小伙伴", "访客"],
-            metaPlaceholder: metaPlaceholder
+            metaPlaceholder: metaPlaceholder,
         }
         // Valine设置
         new Valine(initData);

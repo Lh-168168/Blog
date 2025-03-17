@@ -81,3 +81,4 @@ Python：Python3.8
 ![image-20241126193354205](D:\Py_Location\django-matery-blog-master\Blog\assets\image-20241126193354205.png)
 
 ![image-20241126193412195](D:\Py_Location\django-matery-blog-master\Blog\assets\image-20241126193412195.png)
+

@@ -4,6 +4,14 @@
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/bubble.css' %}">
     <style>
+        .notices {
+            border-radius: 11px;
+            box-shadow: 0 15px 35px rgba(50, 50, 93, .1), 0 5px 15px rgb(226 207 207 / 50%);
+            margin: .5rem auto 1rem;
+            /* background-image: url(https://files.islu.cn/detail/star.svg); */
+            -webkit-transition: -webkit-box-shadow .25s;
+            transition: box-shadow .25s, -webkit-box-shadow .25s;
+        }
         .block-with-add {
             overflow: hidden;
             display: -webkit-box;
@@ -12,6 +20,19 @@
             text-overflow: ellipsis;
         }
 
+        @keyframes lightbulb-on {
+            0% {
+                opacity: 0.3;
+                filter: drop-shadow(0 0 10px rgba(255, 255, 0, 0));
+            }
+            100% {
+                opacity: 1;
+                filter: drop-shadow(0 0 10px rgba(255, 255, 0, 1));
+            }
+        }
+        #lightbulb-on {
+            animation: lightbulb-on 2s infinite alternate;
+        }
         .text {
             overflow: hidden;
             display: -webkit-box;
@@ -113,12 +134,12 @@
                         {#                        });#}
                         {#                    </script>#}
                         {% for notice in notices %}
-                            <div class="dream">
-                                <div class="title center-align">
-                                    <i class="{{ notice.icon }}"></i>&nbsp;&nbsp;{{ notice.title }}
+                            <div class="notices">
+                                 <div class="title center-align">
+                                        <i id="lightbulb-on"style="color: #fad390;">&nbsp;&nbsp;Welcome！</i>
                                 </div>
                                 <div class="row">
-                                    <div class="col l8 offset-l2 m10 offset-m1 s10 offset-s1 center-align text">
+                                    <div class="col l8 offset-l2 m10 offset-m1 s10 offset-s1 center-align text" style="font-size:1.2rem">
                                         {{ notice.content }}
                                     </div>
                                 </div>

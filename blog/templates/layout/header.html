@@ -98,26 +98,26 @@
                             <span>关于</span>
                         </a>
                     </li>
-                    <li class="hide-on-med-and-down nav-item">
-                        <a href="{% url 'edit' %}" class="waves-effect waves-light">
-                            <i class="fa fa-link" style="zoom: 0.6;"></i>
-                            <span>发布</span>
-                        </a>
-                    </li>
-                    <li class="hide-on-med-and-down nav-item">
-                        {% if request.session.info.name %}
-                            <a href="{% url 'logout' %}" class="waves-effect waves-light">
-                                <i class="fas fa-sign-out-alt" style="zoom: 0.7;"></i>
-                                <span>注销</span>
-                            </a>
-                        {% else %}
-                            <a href="{% url 'login' %}" class="waves-effect waves-light">
-                                <i class="fas fa-sign-in-alt" style="zoom: 0.7;"></i>
-                                <span>登录</span>
-                            </a>
-                        {% endif %}
-
-                    </li>
+{#                    <li class="hide-on-med-and-down nav-item">#}
+{#                        <a href="{% url 'edit' %}" class="waves-effect waves-light">#}
+{#                            <i class="fa fa-link" style="zoom: 0.6;"></i>#}
+{#                            <span>发布</span>#}
+{#                        </a>#}
+{#                    </li>#}
+{#                    <li class="hide-on-med-and-down nav-item">#}
+{#                        {% if request.session.info.name %}#}
+{#                            <a href="{% url 'logout' %}" class="waves-effect waves-light">#}
+{#                                <i class="fas fa-sign-out-alt" style="zoom: 0.7;"></i>#}
+{#                                <span>注销</span>#}
+{#                            </a>#}
+{#                        {% else %}#}
+{#                            <a href="{% url 'login' %}" class="waves-effect waves-light">#}
+{#                                <i class="fas fa-sign-in-alt" style="zoom: 0.7;"></i>#}
+{#                                <span>登录</span>#}
+{#                            </a>#}
+{#                        {% endif %}#}
+{##}
+{#                    </li>#}
                     <li>
                         <a href="#searchModal" class="modal-trigger waves-effect waves-light">
                             <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
