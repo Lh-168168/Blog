@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '!bvt-!&^zj-xqpdu$9xu#8*^fximunwhv@!4z1pd6+l-e381!#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -141,6 +141,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_L10N = False
+USE_L10N = False
 
 USE_TZ = True
 #日期格式
@@ -154,6 +155,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
 #STATICFILES_DIRS = [
 #    os.path.join(BASE_DIR, "bolg/static")
 #]
+
 
 
 #SimpleUi后台设置
