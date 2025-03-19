@@ -1,4 +1,3 @@
-from django.db.backends.sqlite3.base import none_guard
 from django.shortcuts import redirect
 from django.utils.deprecation import MiddlewareMixin
 
